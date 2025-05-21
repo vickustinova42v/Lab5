@@ -32,8 +32,8 @@ namespace Lab5
                 chart1.Series["y(x)"].BorderWidth = 2;
                 chart1.ChartAreas[0].AxisX.Title = "x";
                 chart1.ChartAreas[0].AxisY.Title = "y";
-                chart1.ChartAreas[0].AxisX.Minimum = Double.NaN;
-                chart1.ChartAreas[0].AxisX.Maximum = Double.NaN;
+                chart1.ChartAreas[0].AxisX.Minimum = Double.NaN; // Авто-масштаб
+                chart1.ChartAreas[0].AxisX.Maximum = Double.NaN; // Авто-масштаб
                 chart1.ChartAreas[0].AxisY.Minimum = Double.NaN; // Авто-масштаб
                 chart1.ChartAreas[0].AxisY.Maximum = Double.NaN; // Авто-масштаб
                 filledChart = "chart1";
@@ -45,19 +45,19 @@ namespace Lab5
                 chart2.Series["y(x)"].BorderWidth = 2;
                 chart2.ChartAreas[0].AxisX.Title = "x";
                 chart2.ChartAreas[0].AxisY.Title = "y";
-                chart2.ChartAreas[0].AxisX.Minimum = Double.NaN;
-                chart2.ChartAreas[0].AxisX.Maximum = Double.NaN;
+                chart2.ChartAreas[0].AxisX.Minimum = Double.NaN; // Авто-масштаб
+                chart2.ChartAreas[0].AxisX.Maximum = Double.NaN; // Авто-масштаб
                 chart2.ChartAreas[0].AxisY.Minimum = Double.NaN; // Авто-масштаб
                 chart2.ChartAreas[0].AxisY.Maximum = Double.NaN; // Авто-масштаб
                 filledChart = "chart2";
             }
 
-            double x0 = double.Parse(textBoxX0.Text);
-            double y1 = double.Parse(textBoxY0.Text); // y
-            double y2 = double.Parse(textBoxY1.Text); // y'
-            double y3 = double.Parse(textBoxY2.Text); // y''
-            double h = double.Parse(textBoxH.Text);
-            int steps = int.Parse(textBoxN.Text);
+            double x0 = double.Parse(textBoxX0.Text); // начальное значение x
+            double y1 = double.Parse(textBoxY0.Text); // начальное значение y (y1)
+            double y2 = double.Parse(textBoxY1.Text); // начальное значение y' (y2)
+            double y3 = double.Parse(textBoxY2.Text); // начальное значение y'' (y3)
+            double h = double.Parse(textBoxH.Text); // шаг
+            int steps = int.Parse(textBoxN.Text); // количество шагов
 
             for (int i = 0; i < steps; i++)
             {
@@ -69,6 +69,13 @@ namespace Lab5
                 {
                     chart2.Series["y(x)"].Points.AddXY(x0, y1);
                 }
+
+                // Преобразование уравнения 3-го порядка y''' = x^2 + xy + x^2y' + xy''
+                // в систему трёх уравнений первого порядка:
+                // y1 = y,    y2 = y',    y3 = y''
+                // y1' = y2
+                // y2' = y3
+                // y3' = x^2 + x*y1 + x^2*y2 + x*y3
 
                 double k1_1 = h * y2;
                 double k1_2 = h * y3;
@@ -94,6 +101,7 @@ namespace Lab5
             }
         }
 
+       // Уравнение 3-го порядка y''' = x^2 + xy + x^2y' + xy''
         private double f1(double x, double y, double y1, double y2)
         {
             return x * x + x * y + x * x * y1 + x * y2;
